@@ -22,4 +22,4 @@ If you use this code or data in your research, please cite the following manuscr
 To run the optical simulations, the following Python packages are required:
 
 ```bash
-pip install numpy torch torchvision matplotlib scipy scienceplots tqdm
+pip install numpy torch torchvision matplotlib scipy scienceplots tqdm scikit-learn
