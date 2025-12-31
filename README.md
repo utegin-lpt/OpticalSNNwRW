@@ -3,7 +3,7 @@
 This repository contains the source code, data, and simulation environment for the manuscript **"Optical Spiking Neural Networks via Rogue-Wave Statistics"** by Kesgin et al.
 
 ## 📂 Content
-* **`optical_net_train.py`**: A PyTorch-based Optical Neural Network (ONN). It trains a phase layer to modulate light, aiming to generate rogue waves at specific spatial locations for image classification tasks.
+* **`optical_net_train.py`**: A PyTorch-based Optical Neural Network (ONN) for BreastMNIST dataset. It trains a phase layer to modulate light, aiming to generate rogue waves at specific spatial locations for image classification tasks.
 * **`rogue_wave_analysis.py`**: Contains rogue wave simulations with data and control pattern using complex amplitude modulation.
 * **`utils.py`**: Contains core physical functions, including the Angular Spectrum Method propagator and padding utilities. Angular Spectrum Method implementation is altered from https://github.com/computational-imaging/neural-holography.
 
