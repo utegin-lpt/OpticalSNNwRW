@@ -9,15 +9,44 @@ import math
 import torch.nn.functional as F
 from sklearn.model_selection import train_test_split
 import utils
+from torchvision import datasets, transforms
+from skimage.color import rgb2gray
+import medmnist
+from medmnist import INFO, Evaluator
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f"Using device: {device}")
 
 # Load data
-samples = np.load("BreastMNIST/images.npy")/255
-labels = np.load("BreastMNIST/breast_labels.npy")
+# Datasets are available publicly, thus not included here
+# Load data
+
+data_flag = 'breastmnist'
+download = True
+
+info = INFO[data_flag]
+task = info['task']
+n_channels = info['n_channels']
+n_classes = len(info['label'])
+
+DataClass = getattr(medmnist, info['python_class'])
+t = transforms.ToTensor()
+# load the data
+train_label = np.array(DataClass(split='train', transform=t, download=download,).labels)
+test_label = np.array(DataClass(split='test', transform=t, download=download).labels)
+val_label = np.array(DataClass(split='val', transform=t, download=download).labels)
+labels = np.concatenate((train_label,test_label,val_label))
+train_dataset = np.array(DataClass(split='train', transform=t, download=download,size=224).imgs)
+test_dataset = np.array(DataClass(split='test', transform=t, download=download, size=224).imgs)
+val_dataset = np.array(DataClass(split='val', transform=t, download=download, size=224).imgs)
+df = np.concatenate((train_dataset,test_dataset,val_dataset))
+print(df.shape)
 num_classes = len(np.unique(labels))
 
+samples = np.ones((len(df),224,224))
+for i in range(len(df)):
+    samples[i] = rgb2gray(df[i])
+num_classes = len(np.unique(labels))
 print(f"Original data shape: {samples.shape}")
 
 # Parameters
@@ -487,4 +516,5 @@ with torch.no_grad():
     plt.savefig('visualization_.png', dpi=300)
 
 print(f"\nSample prediction accuracy: {(preds == y_sample).float().mean().item() * 100:.2f}%")
+
 print(f"Best test accuracy: {checkpoint['test_acc']:.2f}%")
